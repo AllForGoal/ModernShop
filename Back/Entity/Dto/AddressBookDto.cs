@@ -12,6 +12,8 @@ namespace Entity.Dto
         public string Address { get; set; }
         public string Email { get; set; }
         public string Photo { get; set; }
+        public string Photo1 { get; set; }
+    
     }
      public class AddAddressBookDto
     {
