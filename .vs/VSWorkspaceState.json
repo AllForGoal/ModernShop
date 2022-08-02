@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Back"
+    "\\Back",
+    "\\Back\\z_EcommerceSystem",
+    "\\Back\\z_EcommerceSystem\\Services"
   ],
-  "SelectedNode": "\\Back\\z_EcommerceSystem.sln",
+  "SelectedNode": "\\Back\\z_EcommerceSystem\\Services\\JwtAuthenticationManager.cs",
   "PreviewInSolutionExplorer": false
 }

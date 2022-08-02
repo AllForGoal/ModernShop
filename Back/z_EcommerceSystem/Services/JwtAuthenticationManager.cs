@@ -13,11 +13,11 @@ using z_EcommerceSystem.Helpers;
 
 namespace z_EcommerceSystem.Services
 {
-    public class AuthService : IAuthService //fzdhgf
+    public class JwtAuthenticationManager : IJwtAuthenticationManager
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly Jwt _jwt;
-        public AuthService(IAuthenticationService authenticationService, Jwt jwt)
+        public JwtAuthenticationManager(IAuthenticationService authenticationService, Jwt jwt)
         {
             _authenticationService = authenticationService;
             _jwt = jwt;
