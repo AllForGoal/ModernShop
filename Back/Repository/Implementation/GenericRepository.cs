@@ -33,7 +33,7 @@ namespace Repository.Implementation
 
         public List<T> getEntity(bool track)
         {
-            return track ? _entity.AsNoTracking().ToList() : _entity.ToList();  //fzzzzzz
+            return track ? _entity.AsNoTracking().ToList() : _entity.ToList();
         }
 
         public async Task<List<T>> getEntityAsync(bool track)
