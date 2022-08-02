@@ -1,23 +1,46 @@
 using Entity.Core;
 using Entity.Context;
 using Repository.Interface;
+using Entity.Core.Models;
+
 namespace Repository.Implementation
 {
     public class UntityOfWork : IUntityOfWork
     {
-    //    private readonly appdbcontexttest _context;
-    //    private  genericrepository<room> _genericrepository;
+        private readonly AppEccommerceDbContext _dbContext;
+        IGenericRepository<Product> _ProductRepository;
+        IGenericRepository<Stock> _StockRepository;
 
-    //    public untityofwork(appdbcontexttest context)
-    //    {
-    //        _context=context;
-    //    }
-    //     public genericrepository<room> genericrepository {
-    //          get{
-    //              if(_genericrepository==null)
-    //                        _genericrepository=new genericrepository<room>(_context);
-    //            return  _genericrepository;
-    //          } 
-    //          }
+
+        public UntityOfWork(AppEccommerceDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+        public IGenericRepository<Product> ProductRepository {
+            get
+            {
+                if (_ProductRepository == null)
+                {
+                    return new GenericRepository<Product>(_dbContext);
+                }
+                return _ProductRepository;
+            }
+        }
+        public IGenericRepository<Stock> genericRepository
+        {
+            get
+            {
+                if (_ProductRepository == null)
+                {
+                    return new GenericRepository<Stock>(_dbContext);
+                }
+                return _StockRepository;
+            }
+        }
+
+        public void SaveChange()
+        {
+            _dbContext.SaveChanges();
+        }
     }
 }
