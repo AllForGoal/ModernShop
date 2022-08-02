@@ -35,8 +35,7 @@ namespace TestApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<Jwt>(Configuration.GetSection("Jwt"));
-            services.AddScoped<IAuthService, AuthService>();
-
+           
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -47,26 +46,7 @@ namespace TestApplication
             services.AddAutoMapper(typeof(AppProfileConfiguration));
 
            services.ConnectedSql(Configuration);
-            //add this configuration to prevent add AuthenticationSchemes every time in controller 
-            services.AddAuthentication(options => {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
-            {
-                o.RequireHttpsMetadata = false;
-                o.SaveToken = false;
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidIssuer = Configuration["JWT:Issuer"],
-                    ValidAudience = Configuration["JWT:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"]))
-                };
-
-            });
+          
 
             services.ConfigurationIdentity();
         }
