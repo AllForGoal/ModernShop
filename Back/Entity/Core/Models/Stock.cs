@@ -13,7 +13,7 @@ namespace Entity.Core.Models
     public class Stock : EntityId
     {
         //        public string Color { get; set; }
-        public Color Color { get; set; }
+        public string Color { get; set; }
         public Enums.Size Size { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }

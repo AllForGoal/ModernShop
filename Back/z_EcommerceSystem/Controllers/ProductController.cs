@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Entity.Core.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interface;
 using System;
@@ -13,10 +14,10 @@ namespace z_EcommerceSystem.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IUntityOfWork _untityOfWork;
-
         public ProductController(IUntityOfWork untityOfWork)
         {
             _untityOfWork = untityOfWork;
         }
+
     }
 }
