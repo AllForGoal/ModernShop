@@ -6,7 +6,7 @@ using z_EcommerceSystem.DTO;
 
 namespace z_EcommerceSystem.Services
 {
-    public interface IAuthService
+    public interface IJwtAuthenticationManager
     {
         Task<AuthDTO> Register(RegisterModel register);
     }

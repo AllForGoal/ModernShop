@@ -34,8 +34,9 @@ namespace TestApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //configure class jwt  with AppSetting
             services.Configure<Jwt>(Configuration.GetSection("Jwt"));
-            services.AddScoped<IAuthService, AuthService>();
+          
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -48,27 +49,10 @@ namespace TestApplication
 
            services.ConnectedSql(Configuration);
             //add this configuration to prevent add AuthenticationSchemes every time in controller 
-            services.AddAuthentication(options => {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
-            {
-                o.RequireHttpsMetadata = false;
-                o.SaveToken = false;
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidIssuer = Configuration["JWT:Issuer"],
-                    ValidAudience = Configuration["JWT:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"]))
-                };
-
-            });
+         
 
             services.ConfigurationIdentity();
+            services.ConfigurationJWT(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
