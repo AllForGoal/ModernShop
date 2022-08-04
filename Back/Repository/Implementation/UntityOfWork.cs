@@ -26,7 +26,7 @@ namespace Repository.Implementation
                 return _ProductRepository;
             }
         }
-        public IGenericRepository<Stock> genericRepository
+        public IGenericRepository<Stock> StockRepository
         {
             get
             {

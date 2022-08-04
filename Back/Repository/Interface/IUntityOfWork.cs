@@ -7,7 +7,7 @@ namespace Repository.Interface
     public interface IUntityOfWork
     {
            IGenericRepository<Product> ProductRepository { get; }
-           IGenericRepository<Stock> genericRepository { get; }
+           IGenericRepository<Stock> StockRepository { get; }
         void SaveChange();
     }
 }
