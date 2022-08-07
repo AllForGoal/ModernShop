@@ -1,23 +1,32 @@
 using Entity.Core;
 using Entity.Context;
 using Repository.Interface;
+using Entity.Core.Models;
+using Repository.Interface.UserRepository;
+using Repository.Implementation.UserRepository;
+using System.Threading.Tasks;
+
 namespace Repository.Implementation
 {
     public class UntityOfWork : IUntityOfWork
     {
-    //    private readonly appdbcontexttest _context;
-    //    private  genericrepository<room> _genericrepository;
+        private readonly AppEccommerceDbContext _context;
+        private ICategoryRepository _categoryRepository;
 
-    //    public untityofwork(appdbcontexttest context)
-    //    {
-    //        _context=context;
-    //    }
-    //     public genericrepository<room> genericrepository {
-    //          get{
-    //              if(_genericrepository==null)
-    //                        _genericrepository=new genericrepository<room>(_context);
-    //            return  _genericrepository;
-    //          } 
-    //          }
+        public UntityOfWork(AppEccommerceDbContext context)
+        {
+            _context = context;
+        }
+
+        public ICategoryRepository CategoryRepository
+        {
+            get
+            {
+                if (_categoryRepository == null)
+                    _categoryRepository = new CategoryRepository(_context);
+                return _categoryRepository;
+            }
+        }
+        public Task SaveAsync() => _context.SaveChangesAsync();
     }
 }
