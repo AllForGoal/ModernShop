@@ -15,8 +15,12 @@ namespace Services.IContract
 
         public Task<GetCategoryDTO> getCategory(int categoryoId);
 
-        public Task UpdateCategory(UpdateCategoryDto categoryDto);
+        public Task<List<GetCategoryDTO>> getParentcategory();
 
-        public Task DeleteCategory(int categoryoId);
+        public Task<List<GetCategoryDTO>> getCategorysByParent(int categoryoId);
+
+        public void UpdateCategory(int id, UpdateCategoryDto categoryDto);
+
+        public void DeleteCategory(int categoryoId);
     }
 }

@@ -41,22 +41,53 @@ namespace Services.Services
             return null;
         }
 
-        public void DeleteCategory(int categoryoId)
+        public async void DeleteCategory(int categoryoId)
         {
             if (categoryoId != 0)
             {
                 _untityOfWork.CategoryRepository.DeleteCategory(categoryoId);
+                await _untityOfWork.SaveAsync();
             }
         }
 
-        public Task<GetCategoryDTO> getCategory(int categoryoId)
+        public async Task<GetCategoryDTO> getCategory(int categoryoId)
         {
-            throw new NotImplementedException();
+            if (categoryoId != 0)
+            {
+                var category = await _untityOfWork.CategoryRepository.GetCategory(categoryoId);
+                if (category != null)
+                {
+                    var catDto = _Mapper.Map<GetCategoryDTO>(category);
+                    return catDto;
+                }
+            }
+            return null;
         }
 
-        public Task UpdateCategory(UpdateCategoryDto categoryDto)
+        //get child and parent categories
+        public async Task<List<GetCategoryDTO>> getCategorysByParent(int categoryoId)
         {
-            throw new NotImplementedException();
+            var catigories = await _untityOfWork.CategoryRepository.GetCategorys(categoryoId);
+            var catDto = _Mapper.Map<List<GetCategoryDTO>>(catigories);
+            return catDto;
+        }
+
+        public async Task<List<GetCategoryDTO>> getParentcategory()
+        {
+            var catigories = await _untityOfWork.CategoryRepository.GetCategorys(0);
+            var catDto = _Mapper.Map<List<GetCategoryDTO>>(catigories);
+            return catDto;
+        }
+
+        public async void UpdateCategory(int id, UpdateCategoryDto categoryDto)
+        {
+            if (categoryDto != null)
+            {
+                var category = await _untityOfWork.CategoryRepository.GetCategory(id);
+                var cat = _Mapper.Map(categoryDto, category);
+                _untityOfWork.CategoryRepository.UpdateCategory(cat);
+                await _untityOfWork.SaveAsync();
+            }
         }
     }
 }
