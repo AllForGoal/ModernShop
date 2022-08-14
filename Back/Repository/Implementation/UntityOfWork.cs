@@ -43,10 +43,7 @@ namespace Repository.Implementation
         private readonly AppEccommerceDbContext _context;
         private ICategoryRepository _categoryRepository;
 
-        public UntityOfWork(AppEccommerceDbContext context)
-        {
-            _context = context;
-        }
+ 
 
         public ICategoryRepository CategoryRepository
         {

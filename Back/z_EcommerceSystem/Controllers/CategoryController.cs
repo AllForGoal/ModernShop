@@ -16,8 +16,6 @@ namespace z_EcommerceSystem.Controllers
     public class CategoryController : ControllerBase
     {private readonly ICategoryService _categoryService;
 
-
-
         public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
@@ -31,10 +29,6 @@ namespace z_EcommerceSystem.Controllers
             if (result == null)
                 return BadRequest();
             return Ok(result);
-
-
         }
-
-      
     }
 }
