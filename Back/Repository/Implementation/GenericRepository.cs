@@ -55,6 +55,11 @@ namespace Repository.Implementation
         {
             return await _entity.Where(d => d.Id == id).FirstOrDefaultAsync();
         }
+        public async Task<T> getOneEntityAsync(Expression<Func<T, bool>> expression, bool track)
+        {
+            return track ? await _entity.AsNoTracking().Where(expression).FirstOrDefaultAsync() : await _entity.Where(expression).FirstOrDefaultAsync();
+        }
+
 
         public T getEntityById(int id)
         {
@@ -64,6 +69,16 @@ namespace Repository.Implementation
         public void updateEntity(T entity)
         {
             _entity.Update(entity);
+        }
+        public IQueryable<T> GetAsQueryableString(String includes, Expression<Func<T, bool>> predicate = null)
+        {
+            String[] str = includes.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            IQueryable<T> query = _context.Set<T>().Where(predicate);
+            foreach (var includeProperty in str)
+            {
+                query = query.Include(includeProperty);
+            }
+            return query;
         }
     }
 }
