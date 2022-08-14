@@ -10,8 +10,8 @@ namespace Repository.Interface
     {
            IGenericRepository<Product> ProductRepository { get; }
            IGenericRepository<Stock> StockRepository { get; }
-        void SaveChange();
+        int SaveChange();
        public  ICategoryRepository CategoryRepository { get; }
-        public Task SaveAsync();
+        public Task<int> SaveAsync();
     }
 }

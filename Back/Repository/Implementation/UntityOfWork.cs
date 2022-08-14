@@ -54,10 +54,7 @@ namespace Repository.Implementation
                 return _categoryRepository;
             }
         }
-        public Task SaveAsync() => _context.SaveChangesAsync();
-        public void SaveChange()
-        {
-            _dbContext.SaveChanges();
-        }
+        public Task<int> SaveAsync() => _context.SaveChangesAsync();
+        public int SaveChange()=>_dbContext.SaveChanges();
     }
 }

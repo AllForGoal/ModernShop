@@ -4,6 +4,8 @@ using Entity.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interface;
+using Services.IContract;
+using Services.Respond;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +19,13 @@ namespace z_EcommerceSystem.Controllers
     {
         private readonly IUntityOfWork _untityOfWork;
         private readonly IMapper _mapper;
-        public ProductController(IUntityOfWork untityOfWork,IMapper mapper)
+        private readonly IproductService _productService;
+
+        public ProductController(IUntityOfWork untityOfWork,IMapper mapper,IproductService productService)
         {
             _untityOfWork = untityOfWork;
             _mapper = mapper;
+            _productService=productService;
         }
 
 
@@ -33,14 +38,7 @@ namespace z_EcommerceSystem.Controllers
         //get all products 
         public async Task<IActionResult> GetAll()
         {
-            var result = await _untityOfWork.ProductRepository.getEntityAsync(false);
-            
-            if (result != null)
-            {
-                List<ProductDto> products = _mapper.Map<List<ProductDto>>(result);
-                return Ok(products);
-            }
-            else return StatusCode(400,"internal server error");
+          return Ok(await  _productService.GetAllAsync());
         }
 
         [Produces("application/json")]
@@ -52,35 +50,28 @@ namespace z_EcommerceSystem.Controllers
         //get all products 
         public async Task<IActionResult> Get(int Id)
         {
-            var result = await _untityOfWork.ProductRepository.getEntityAsyncById(Id);
-
-            if (result != null)
-            {
-                ProductDto product = _mapper.Map<ProductDto>(result);
-                return Ok(product);
-            }
-            else return StatusCode(400, "internal server error");
+            return Ok(await  _productService.GetAsync(Id));
         }
-
+        
         [Produces("application/json")]
         [ProducesResponseType(200, Type = typeof(bool))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(401, Type = typeof(string))]
         [ProducesResponseType(500, Type = typeof(string))]
         [HttpPut("Update")]
-        public async Task<IActionResult> Update(ProductUpdateDto productDto)
+        public IActionResult Update(ProductUpdateDto productDto)
         {
-            try
-            {
-                Product product = _mapper.Map<Product>(productDto);
-                _untityOfWork.ProductRepository.updateEntity(product);
-                _untityOfWork.SaveChange();
-                return Ok(true);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(401, e.Message);
-            }
+          return Ok(  _productService.Update(productDto));
+        }
+         [Produces("application/json")]
+        [ProducesResponseType(200, Type = typeof(ServiceResponded<ProductDto>))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(401, Type = typeof(string))]
+        [ProducesResponseType(500, Type = typeof(string))]
+        [HttpPost("AddProduct")]
+        public  ServiceResponded<ProductDto> AddProduct(ProductAddDto productDto)
+        {
+            return(_productService.AddProduct(productDto));
         }
     }
 }

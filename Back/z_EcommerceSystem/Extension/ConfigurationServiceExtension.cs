@@ -23,6 +23,7 @@ namespace TestApplication.Extension
         {
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
+            services.AddScoped(typeof(IproductService), typeof(productService));
         }
     }
 }

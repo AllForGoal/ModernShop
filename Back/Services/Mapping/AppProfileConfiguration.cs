@@ -1,8 +1,6 @@
 using AutoMapper;
 using Entity.Core.Models;
 using Entity.Dto;
-
-using Entity.Core.Models;
 using z_EcommerceSystem.DTO;
 
 namespace Services.Mapping
@@ -12,10 +10,11 @@ namespace Services.Mapping
          public AppProfileConfiguration()
          {
             //CreateMap<ProductDto,Product>();
-            CreateMap<Product, ProductDto>();
-            CreateMap<ProductUpdateDto,Product>();
-            CreateMap<Stock, StockDto>();
-            CreateMap<StockUpdateDto,Stock>();
+            CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<ProductUpdateDto,Product>().ReverseMap();
+            CreateMap<ProductAddDto,Product>().ReverseMap();
+            CreateMap<Stock, StockDto>().ReverseMap();
+            CreateMap<StockUpdateDto,Stock>().ReverseMap();
             CreateMap<CreateCategoryDTO, Category>().ReverseMap();
         }
     }
