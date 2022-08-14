@@ -13,53 +13,54 @@ namespace z_EcommerceSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class StockController : ControllerBase
     {
         private readonly IUntityOfWork _untityOfWork;
         private readonly IMapper _mapper;
-        public ProductController(IUntityOfWork untityOfWork,IMapper mapper)
+        public StockController(IUntityOfWork untityOfWork,IMapper mapper)
         {
             _untityOfWork = untityOfWork;
             _mapper = mapper;
         }
-
-
         [Produces("application/json")]
-        [ProducesResponseType(200, Type = typeof(List<ProductDto>))]
+        [ProducesResponseType(200, Type = typeof(List<StockDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(401, Type = typeof(string))]
         [ProducesResponseType(500, Type = typeof(string))]
-        [HttpGet("GetAll")]
-        //get all products 
-        public async Task<IActionResult> GetAll()
+        [HttpGet("GetAll/{id}")]
+        public async Task<IActionResult> GetAll(int id) //product id
         {
-            var result = await _untityOfWork.ProductRepository.getEntityAsync(false);
-            
-            if (result != null)
+            try
             {
-                List<ProductDto> products = _mapper.Map<List<ProductDto>>(result);
-                return Ok(products);
+                var result = await _untityOfWork.StockRepository.getEntityAsync(s => s.ProductId == id, false);
+                List<StockDto> stocks = _mapper.Map<List<StockDto>>(result);
+                return Ok(stocks);
             }
-            else return StatusCode(400,"internal server error");
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
 
         [Produces("application/json")]
-        [ProducesResponseType(200, Type = typeof(ProductDto))]
+        [ProducesResponseType(200, Type = typeof(StockDto))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(401, Type = typeof(string))]
         [ProducesResponseType(500, Type = typeof(string))]
-        [HttpGet("Get/{Id}")]
-        //get all products 
-        public async Task<IActionResult> Get(int Id)
+        [HttpGet("Get/{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            var result = await _untityOfWork.ProductRepository.getEntityAsyncById(Id);
-
-            if (result != null)
+            try
             {
-                ProductDto product = _mapper.Map<ProductDto>(result);
-                return Ok(product);
+                var result = await _untityOfWork.StockRepository.getEntityAsyncById(id);
+
+                    StockDto stock = _mapper.Map<StockDto>(result);
+                    return Ok(stock);
             }
-            else return StatusCode(400, "internal server error");
+            catch (Exception e)
+            {
+                            return StatusCode(500, e.Message);
+            }
         }
 
         [Produces("application/json")]
@@ -68,12 +69,12 @@ namespace z_EcommerceSystem.Controllers
         [ProducesResponseType(401, Type = typeof(string))]
         [ProducesResponseType(500, Type = typeof(string))]
         [HttpPut("Update")]
-        public async Task<IActionResult> Update(ProductUpdateDto productDto)
+        public async Task<IActionResult> Update(StockUpdateDto stockDto)
         {
             try
             {
-                Product product = _mapper.Map<Product>(productDto);
-                _untityOfWork.ProductRepository.updateEntity(product);
+                Stock stock = _mapper.Map<Stock>(stockDto);
+                _untityOfWork.StockRepository.updateEntity(stock);
                 _untityOfWork.SaveChange();
                 return Ok(true);
             }

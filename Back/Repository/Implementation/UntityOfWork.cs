@@ -10,6 +10,36 @@ namespace Repository.Implementation
 {
     public class UntityOfWork : IUntityOfWork
     {
+        private readonly AppEccommerceDbContext _dbContext;
+        IGenericRepository<Product> _ProductRepository;
+        IGenericRepository<Stock> _StockRepository;
+
+
+        public UntityOfWork(AppEccommerceDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+        public IGenericRepository<Product> ProductRepository {
+            get
+            {
+                if (_ProductRepository == null)
+                {
+                    return new GenericRepository<Product>(_dbContext);
+                }
+                return _ProductRepository;
+            }
+        }
+        public IGenericRepository<Stock> StockRepository
+        {
+            get
+            {
+                if (_ProductRepository == null)
+                {
+                    return new GenericRepository<Stock>(_dbContext);
+                }
+                return _StockRepository;
+            }
+        }
         private readonly AppEccommerceDbContext _context;
         private ICategoryRepository _categoryRepository;
 
@@ -28,5 +58,9 @@ namespace Repository.Implementation
             }
         }
         public Task SaveAsync() => _context.SaveChangesAsync();
+        public void SaveChange()
+        {
+            _dbContext.SaveChanges();
+        }
     }
 }
